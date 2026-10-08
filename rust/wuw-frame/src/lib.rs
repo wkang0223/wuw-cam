@@ -4,6 +4,9 @@
 use core::ops::Range;
 
 /// Byte range of the first complete JPEG (SOI `FF D8` .. EOI `FF D9` inclusive).
+///
+/// Assumes a sensor-generated baseline JPEG with no embedded thumbnail (the
+/// OV5640 encoder emits no EXIF); not for arbitrary JPEG files.
 pub fn find_jpeg(buf: &[u8]) -> Option<Range<usize>> {
     let soi = buf.windows(2).position(|w| w == [0xFF, 0xD8])?;
     let after = soi + 2;
@@ -48,6 +51,17 @@ mod tests {
     fn eoi_before_soi_is_ignored() {
         let b = [0xFF, 0xD9, 0xFF, 0xD8, 7, 0xFF, 0xD9];
         assert_eq!(find_jpeg(&b), Some(2..7));
+    }
+
+    #[test]
+    fn minimal_soi_eoi_only() {
+        assert_eq!(find_jpeg(&[0xFF, 0xD8, 0xFF, 0xD9]), Some(0..4));
+    }
+
+    #[test]
+    fn fill_byte_before_eoi() {
+        let b = [0xFF, 0xD8, 1, 0xFF, 0xFF, 0xD9];
+        assert_eq!(find_jpeg(&b), Some(0..6));
     }
 
     #[test]

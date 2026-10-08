@@ -43,6 +43,24 @@ class GenTest(unittest.TestCase):
         with self.assertRaises(KeyError):
             gen.parse(REGS_H, "#define REGLIST_TAIL 0x0000\nstatic const uint16_t t[][2] = { {NOPE, 1}, {REGLIST_TAIL, 0} };")
 
+    def test_literal_tail_value_ends_the_list(self):
+        h = "#define REG_DLY 0xffff\n#define REGLIST_TAIL 0x0000\nstatic const uint16_t t[][2] = { {0x3103, 1}, {0x0000, 0}, {0x3104, 2} };"
+        self.assertEqual(gen.parse(REGS_H, h)["t"], [("W", 0x3103, 1)])
+
+    def test_literal_delay_value_becomes_a_delay(self):
+        h = "#define REG_DLY 0xffff\n#define REGLIST_TAIL 0x0000\nstatic const uint16_t t[][2] = { {0xffff, 20}, {REGLIST_TAIL, 0} };"
+        self.assertEqual(gen.parse(REGS_H, h)["t"], [("D", 20, 0)])
+
+    def test_unparseable_row_fails_loudly(self):
+        h = "#define REG_DLY 0xffff\n#define REGLIST_TAIL 0x0000\nstatic const uint16_t t[][2] = { {0x3800, (x>>8)}, {REGLIST_TAIL, 0} };"
+        with self.assertRaises(ValueError) as cm:
+            gen.parse(REGS_H, h)
+        self.assertIn("t", str(cm.exception))
+
+    def test_missing_sentinels_raise_keyerror(self):
+        with self.assertRaises(KeyError):
+            gen.parse(REGS_H, "static const uint16_t t[][2] = { {0x3103, 1} };")
+
     def test_real_vendor_files_parse(self):
         root = pathlib.Path(__file__).resolve().parent.parent / "rust" / "ov5640" / "vendor"
         tables = gen.parse((root / "ov5640_regs.h").read_text(),

@@ -39,6 +39,7 @@ pub const LCD_BL: u8 = 48;
 pub const TCH_CS: u8 = 42;
 
 /// Every claimed pin with its name, for checks.
+// Keep in sync with the constants above: a pin missing here escapes the collision tests (pincheck still compares every constant with the C++ map).
 #[rustfmt::skip]
 pub const ALL: [(&str, u8); 26] = [
     ("CAM_SIOD", CAM_SIOD), ("CAM_SIOC", CAM_SIOC), ("CAM_VSYNC", CAM_VSYNC),

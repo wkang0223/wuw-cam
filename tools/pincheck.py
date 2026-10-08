@@ -124,7 +124,9 @@ RUST_TO_CPP = {
     "LCD_CS": "LCD_CS", "LCD_DC": "LCD_DC", "LCD_RST": "LCD_RST",
     "LCD_BL": "LCD_BL", "TCH_CS": "TCH_CS",
 }
-if RUST.exists():
+if not RUST.exists():
+    fails.append("rust/wuw-board/src/lib.rs is missing")
+else:
     rust = {m.group(1): int(m.group(2)) for m in re.finditer(
         r"^pub const (\w+): u8 = (\d+);", RUST.read_text(), re.M)}
     cpp = {n: p for d in groups.values() for n, p in d.items()}

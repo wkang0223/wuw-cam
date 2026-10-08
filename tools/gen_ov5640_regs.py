@@ -22,17 +22,27 @@ def value(tok, syms):
 def parse(regs_h, settings_h):
     # REG_DLY / REGLIST_TAIL live in settings.h, register names in regs.h.
     syms = {**defines(regs_h), **defines(settings_h)}
+    missing = [s for s in ("REG_DLY", "REGLIST_TAIL") if s not in syms]
+    if missing:
+        raise KeyError("settings header does not define " + ", ".join(missing))
+    tail, dly = syms["REGLIST_TAIL"], syms["REG_DLY"]
     tables = {}
     for m in re.finditer(r"(\w+)\s*\[\s*\]\s*\[\s*2\s*\]\s*=\s*\{(.*?)\};", settings_h, re.S):
         name, body = m.group(1), re.sub(r"//[^\n]*", "", m.group(2))
+        rows = re.findall(r"\{\s*(\w+)\s*,\s*(\w+)\s*\}", body)
+        if body.count("{") != len(rows):
+            raise ValueError("table %s: %d '{' but only %d parseable {reg, val} rows"
+                             % (name, body.count("{"), len(rows)))
         ops = []
-        for a, b in re.findall(r"\{\s*(\w+)\s*,\s*(\w+)\s*\}", body):
-            if a == "REGLIST_TAIL":
+        # Upstream gamma0/gamma1/awb0 have no REGLIST_TAIL: the array end bounds them, on purpose.
+        for a, b in rows:
+            reg = value(a, syms)
+            if reg == tail:
                 break
-            if a == "REG_DLY":
+            if reg == dly:
                 ops.append(("D", value(b, syms), 0))
             else:
-                ops.append(("W", value(a, syms), value(b, syms)))
+                ops.append(("W", reg, value(b, syms)))
         tables[name] = ops
     return tables
 

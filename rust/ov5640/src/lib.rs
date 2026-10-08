@@ -74,11 +74,22 @@ impl<I: I2c> Ov5640<I> {
 mod tests {
     extern crate std;
     use super::*;
-    use embedded_hal_mock::eh1::{
-        delay::NoopDelay,
-        i2c::{Mock, Transaction as T},
-    };
+    use embedded_hal_mock::eh1::i2c::{Mock, Transaction as T};
     use std::vec;
+    use std::vec::Vec;
+
+    #[derive(Default)]
+    struct RecordingDelay {
+        ms: Vec<u32>,
+    }
+
+    impl DelayNs for RecordingDelay {
+        fn delay_ns(&mut self, _ns: u32) {}
+
+        fn delay_ms(&mut self, ms: u32) {
+            self.ms.push(ms);
+        }
+    }
 
     #[test]
     fn check_id_accepts_ov5640() {
@@ -114,9 +125,11 @@ mod tests {
             Op::DelayMs(10),
             Op::Write(0x3103, 0x13),
         ];
+        let mut delay = RecordingDelay::default();
         Ov5640::new(bus.clone())
-            .apply(&list, &mut NoopDelay)
+            .apply(&list, &mut delay)
             .expect("mock bus");
+        assert_eq!(delay.ms, [10]);
         bus.done();
     }
 
