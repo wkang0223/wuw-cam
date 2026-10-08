@@ -28,3 +28,7 @@ secrets.h
 .playwright-cli/
 __pycache__/
 *.orig
+
+# ── Rust alternative firmware ────────────────────────────────────────────
+rust/**/target/
+rust/**/Cargo.lock.bak
