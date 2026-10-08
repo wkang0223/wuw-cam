@@ -1,0 +1,24 @@
+WUW CAM
+Copyright (C) 2026 wkang0223 (Ritual Scene)
+
+Firmware, build scripts and tools are licensed under GPL-3.0 (LICENSE).
+Case models, documentation and original artwork are licensed under
+CC BY-SA 4.0 (LICENSE-HARDWARE).
+
+Third-party components
+----------------------
+- Silkscreen font (assets/fonts, rasterised into ui_font.cpp)
+  Copyright 2001 The Silkscreen Project Authors. SIL Open Font License 1.1,
+  see assets/fonts/OFL.txt.
+- Three.js 0.180.0 (site/game-preview/vendor). MIT; license in
+  site/game-preview/vendor/LICENSE.
+- LovyanGFX and JPEGDEC are fetched by PlatformIO at build time under their own
+  licenses and are not redistributed in this repository.
+- Arduino-ESP32 / ESP-IDF (Espressif) are fetched by PlatformIO under their own
+  licenses.
+
+Artwork
+-------
+The skin borders (assets/wuw-skin-*) and RPG tile art (assets/wuw-rpg-*) were
+generated with an AI image-generation tool and then processed by the scripts in
+tools/. They are original outputs and are not derived from any named franchise.

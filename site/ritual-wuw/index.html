@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050505">
+  <title>WUW CAM at Ritual Penang</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; margin: 0; background: #050505; color: #f0ece4; }
+    body { display: grid; place-items: center; padding: max(24px, env(safe-area-inset-top)) 20px
+      max(24px, env(safe-area-inset-bottom)); font: 16px/1.45 system-ui, -apple-system, sans-serif; }
+    main { width: min(100%, 540px); border: 1px solid #343038; padding: 24px; }
+    header { border-bottom: 1px solid #343038; padding-bottom: 18px; margin-bottom: 22px; }
+    h1 { margin: 0; font-size: clamp(28px, 9vw, 54px); font-weight: 650; letter-spacing: 0; }
+    header p { margin: 7px 0 0; color: #b9b2bd; }
+    ol { list-style: none; margin: 0; padding: 0; counter-reset: steps; }
+    li { counter-increment: steps; display: grid; grid-template-columns: 38px 1fr; gap: 10px;
+      padding: 15px 0; border-bottom: 1px solid #242127; }
+    li::before { content: counter(steps); width: 28px; height: 28px; display: grid; place-items: center;
+      border: 1px solid #d6285d; color: #ff4b7e; font: 700 13px ui-monospace, monospace; }
+    b, code { color: #fff; }
+    code { font: 700 15px ui-monospace, SFMono-Regular, Menlo, monospace; }
+    small { display: block; margin-top: 4px; color: #9c949f; }
+    a { display: block; margin-top: 22px; padding: 15px; text-align: center; color: #050505;
+      background: #f0ece4; text-decoration: none; font-weight: 750; }
+    a:active { background: #ff4b7e; }
+    footer { margin-top: 16px; color: #7f7882; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>WUW CAM</h1>
+      <p>Connect your phone to photograph, record, and explore together.</p>
+    </header>
+    <ol>
+      <li><div>Open <b>Settings &gt; Wi-Fi</b> and join <code>wuw</code>.<small>On iPhone or iPad, choose “Keep Trying Wi-Fi” or “Use Without Internet” if asked.</small></div></li>
+      <li><div>Enter the password <code>wuwuwuwu</code>.</div></li>
+      <li><div>Return here, then open the camera at <code>192.168.4.1</code>.<small>The address works only while you are connected to the WUW CAM Wi-Fi.</small></div></li>
+    </ol>
+    <a href="http://192.168.4.1/">OPEN WUW CAM</a>
+    <footer>Ritual Penang · WUW CAM local network experience</footer>
+  </main>
+</body>
+</html>

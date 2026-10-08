@@ -1,0 +1,30 @@
+# ── build output ─────────────────────────────────────────────────────────
+# 255 MB of regenerable artefacts. `pio run` rebuilds all of it.
+.pio/
+
+# ── generated geometry ───────────────────────────────────────────────────
+# The .py and blender scripts ARE the source; these are their output and run
+# to ~50 MB. Regenerate with:
+#     uvx --from build123d python case/wuwcam_case.py
+#     "/Applications/Blender 3.app/Contents/MacOS/Blender" --background \
+#         --python case/blender_sculpt.py -- full
+case/*.stl
+case/*.step
+
+# ── secrets ──────────────────────────────────────────────────────────────
+# WiFi credentials live in the device's NVS, never in the tree. If you ever
+# add a local override file, it belongs here and not in a commit.
+credentials.ini
+secrets.h
+*.local.ini
+
+# ── noise ────────────────────────────────────────────────────────────────
+.DS_Store
+*.swp
+*~
+.fxcheck/
+
+# ── local tooling / scratch ──────────────────────────────────────────────
+.playwright-cli/
+__pycache__/
+*.orig

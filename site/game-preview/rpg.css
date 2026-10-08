@@ -1,0 +1,67 @@
+/* Shared compact RPG chrome; camera frames remain unobstructed in the centre. */
+:root { --text:#f2f0dc; --line:#91b9a0; --panel:#303d3d; --dim:#bdc8bb; }
+.shell { border:0; box-shadow:none; }
+.status { background:#20282b; border-bottom:2px solid #a6aa94; font:700 13px/1 Georgia,serif; }
+.status span:last-child { color:#cfbb83; }
+.keys { border-top:2px solid #a6aa94; }
+button { font:700 12px/1.15 Georgia,serif; background:linear-gradient(#52625e,#303b3c 50%,#252e32); border-right:2px ridge #8c998e; color:#f2f0dc; text-shadow:1px 1px #111; }
+button:active { background:#a9c5b3; text-shadow:none; color:#172725; }
+button:focus-visible,.row:focus-visible { outline:2px solid #edc16b; outline-offset:-3px; }
+.list.eight { grid-template-columns:1fr 1fr; grid-template-rows:repeat(4,1fr); gap:6px; padding:8px; background:#222c2e; }
+.list.eight .row { grid-template-columns:48px 1fr; padding:2px 7px; background:#35413f; border:2px ridge #929e8b; box-shadow:none; }
+.list.eight strong { font:700 12px/1.25 Georgia,serif; }
+.list.eight .sigil { width:42px; height:42px; }
+.sigil img { width:100%; height:100%; object-fit:contain; image-rendering:pixelated; }
+.hud { border:2px ridge #bac2a9; background:#263334f0; box-shadow:none; }
+.hud.top { padding-left:58px; }
+.quest-emblem { position:absolute; left:7px; top:50%; width:42px; height:42px; transform:translateY(-50%); image-rendering:pixelated; }
+.gate-title { font:700 13px/1.2 Georgia,serif; color:#f2e8c8; }
+.prompt { font:11px/1.3 Georgia,serif; color:#c9dbcc; margin-top:3px; }
+.hud.bottom { height:17%; }
+.meter { font:10px/1.2 Georgia,serif; }
+.track { background:#0c191c; border-color:#b9bba1; }
+.fill { background:#83bfa9; }
+.notice { font:700 13px/1.3 Georgia,serif; background:#243638f2; border:2px ridge #bac2a9; color:#f0dcaa; }
+.ritual-center { font:12px/1.2 Georgia,serif; }
+.ritual-center b { font:700 26px/1.2 Georgia,serif; }
+#rpg-scene { position:absolute; inset:0; width:100%; height:100%; image-rendering:pixelated; pointer-events:none; }
+.bwo-tools { height:12.5%; border-bottom:2px ridge #bac2a9; background:#273431; }
+.bwo-tools button { font:700 11px/1 Georgia,serif; background:#303e3c; }
+.bwo-hud { top:15%; align-items:flex-start; font:11px/1.2 Georgia,serif; }
+.bwo-party { display:flex; align-items:center; gap:7px; padding:3px 8px 3px 3px; background:#1b292bea; border:2px ridge #b4b89e; }
+.bwo-party img { width:34px; height:34px; image-rendering:pixelated; }
+.bwo-vitals { width:86px; }
+.bwo-vitals .track { height:5px; margin-top:4px; }
+.bwo-vitals b { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-bottom:1px; font:700 10px/1.2 Georgia,serif; letter-spacing:.08em; color:#b4d6cf; }
+#health-fill { width:92%; background:#c56877; }
+#bwo-right { padding:5px; background:#202d30e0; border:1px solid #9ea893; }
+#bwo-view { position:absolute; bottom:6px; right:7px; z-index:4; padding:7px 10px; border:2px ridge #bac2a9; font:700 11px/1 Georgia,serif; min-width:85px; }
+.cross { opacity:.5; width:2%; }
+#shell[data-view="diorama"] .cross { display:none; }
+#world-menu { position:absolute; inset:0; overflow:auto; padding:12px; background:#20282b; display:flex; flex-direction:column; gap:8px; touch-action:pan-y; }
+#world-menu.hidden { display:none; }
+#world-menu button { padding:12px; min-height:44px; text-align:left; flex-shrink:0; }
+#world-menu .photo-thumb { width:32px; height:32px; margin-right:12px; vertical-align:middle; image-rendering:pixelated; }
+#world-menu label { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+#world-menu select { padding:10px; min-height:44px; font:inherit; background:#f2f3ec; color:#20282b; }
+#world-menu input[type=text] { padding:10px; min-height:44px; width:11em; font:inherit; letter-spacing:.06em; text-transform:uppercase; background:#f2f3ec; color:#20282b; }
+.relics { display:flex; flex-wrap:wrap; gap:6px; }
+.relics img { width:40px; height:40px; image-rendering:pixelated; }
+@media(min-width:800px) {
+  .status,.gate-title { font-size:17px; }
+  button,.list.eight strong { font-size:16px; }
+  .prompt,.bwo-hud,.bwo-tools button,#bwo-view { font-size:14px; }
+  .bwo-vitals { width:110px; }
+}
+@media(max-width:520px) {
+  .status { font-size:10px; } button { font-size:10px; }
+  .list.eight { gap:3px; padding:4px; }
+  .list.eight .row { grid-template-columns:29px 1fr; padding:2px 3px; }
+  .list.eight .sigil { width:26px; height:26px; }
+  .list.eight strong { font-size:9px; }
+  .gate-title { font-size:10px; } .prompt { font-size:8px; }
+  .hud.top { padding-left:36px; } .quest-emblem { width:26px; height:26px; left:4px; }
+  .bwo-party img { width:24px; height:24px; } .bwo-hud { font-size:8px; }
+  .bwo-vitals { width:65px; } .bwo-tools button,#bwo-view { font-size:9px; }
+  .meter { font-size:8px; } .dot { width:5px; }
+}
