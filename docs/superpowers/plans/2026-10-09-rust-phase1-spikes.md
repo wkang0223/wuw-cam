@@ -466,7 +466,7 @@ Copied unmodified from https://github.com/espressif/esp32-camera at commit
 Copyright Espressif Systems. Used only as input to tools/gen_ov5640_regs.py.
 ```
 
-- [ ] **Step 4: Read both files** and confirm the table format the generator in Task 6 expects: arrays of `{reg, value}` pairs where `reg` is a hex literal or a `#define` name from `ov5640_regs.h`, the delay marker `REG_DLY`, and the terminator `REGLIST_TAIL`. If the format differs, update Task 6's parsing rules before writing code, and note the change in this plan.
+- [x] **Step 4: Read both files** (done: REG_DLY/REGLIST_TAIL are in settings.h; Task 6 updated) and confirm the table format the generator in Task 6 expects: arrays of `{reg, value}` pairs where `reg` is a hex literal or a `#define` name from `ov5640_regs.h`, the delay marker `REG_DLY`, and the terminator `REGLIST_TAIL`. If the format differs, update Task 6's parsing rules before writing code, and note the change in this plan.
 
 - [ ] **Step 5: Commit**
 
@@ -496,10 +496,10 @@ gen = importlib.util.module_from_spec(spec); spec.loader.exec_module(gen)
 
 REGS_H = """
 #define SYSTEM_CTROL0 0x3008
-#define REG_DLY 0xffff
-#define REGLIST_TAIL 0x0000
 """
 SETTINGS_H = """
+#define REG_DLY 0xffff
+#define REGLIST_TAIL 0x0000
 static const DRAM_ATTR uint16_t sensor_default_regs[][2] = {
     {SYSTEM_CTROL0, 0x82}, // software reset
     {REG_DLY, 10},
@@ -527,7 +527,7 @@ class GenTest(unittest.TestCase):
 
     def test_unknown_symbol_fails_loudly(self):
         with self.assertRaises(KeyError):
-            gen.parse(REGS_H, "static const uint16_t t[][2] = { {NOPE, 1}, {REGLIST_TAIL, 0} };")
+            gen.parse(REGS_H, "#define REGLIST_TAIL 0x0000\nstatic const uint16_t t[][2] = { {NOPE, 1}, {REGLIST_TAIL, 0} };")
 
 if __name__ == "__main__":
     unittest.main()
@@ -565,7 +565,8 @@ def value(tok, syms):
     return int(tok, 0) if re.fullmatch(r"0x[0-9a-fA-F]+|\d+", tok) else syms[tok]
 
 def parse(regs_h, settings_h):
-    syms = defines(regs_h)
+    # REG_DLY / REGLIST_TAIL live in settings.h, register names in regs.h.
+    syms = {**defines(regs_h), **defines(settings_h)}
     tables = {}
     for m in re.finditer(r"(\w+)\s*\[\s*\]\s*\[\s*2\s*\]\s*=\s*\{(.*?)\};", settings_h, re.S):
         name, body = m.group(1), re.sub(r"//[^\n]*", "", m.group(2))
