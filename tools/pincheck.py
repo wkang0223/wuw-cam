@@ -108,6 +108,35 @@ else:
               "  ".join("%d=%s" % (p, inv[p].replace("LCD_", "").replace("TCH_CS", "T_CS"))
                         for p in r)))
 
+# ── Rust alternative firmware ────────────────────────────────────────────
+# rust/wuw-board is a second copy of this map. It must agree with the C++.
+RUST = ROOT / "rust" / "wuw-board" / "src" / "lib.rs"
+RUST_TO_CPP = {
+    "CAM_SIOD": "SIOD_GPIO_NUM", "CAM_SIOC": "SIOC_GPIO_NUM",
+    "CAM_VSYNC": "VSYNC_GPIO_NUM", "CAM_HREF": "HREF_GPIO_NUM",
+    "CAM_D0": "Y2_GPIO_NUM", "CAM_D1": "Y3_GPIO_NUM", "CAM_D2": "Y4_GPIO_NUM",
+    "CAM_D3": "Y5_GPIO_NUM", "CAM_D4": "Y6_GPIO_NUM", "CAM_D5": "Y7_GPIO_NUM",
+    "CAM_D6": "Y8_GPIO_NUM", "CAM_D7": "Y9_GPIO_NUM",
+    "CAM_PCLK": "PCLK_GPIO_NUM", "CAM_XCLK": "XCLK_GPIO_NUM",
+    "SD_CMD": "SD_CMD_PIN", "SD_CLK": "SD_CLK_PIN", "SD_D0": "SD_D0_PIN",
+    "BTN": "BTN_PIN",
+    "LCD_MISO": "LCD_MISO", "LCD_MOSI": "LCD_MOSI", "LCD_SCLK": "LCD_SCLK",
+    "LCD_CS": "LCD_CS", "LCD_DC": "LCD_DC", "LCD_RST": "LCD_RST",
+    "LCD_BL": "LCD_BL", "TCH_CS": "TCH_CS",
+}
+if RUST.exists():
+    rust = {m.group(1): int(m.group(2)) for m in re.finditer(
+        r"^pub const (\w+): u8 = (\d+);", RUST.read_text(), re.M)}
+    cpp = {n: p for d in groups.values() for n, p in d.items()}
+    for rname, cname in RUST_TO_CPP.items():
+        if rust.get(rname) != cpp.get(cname):
+            fails.append("rust/wuw-board %s = %s but C++ %s = %s"
+                         % (rname, rust.get(rname), cname, cpp.get(cname)))
+    extra = set(rust) - set(RUST_TO_CPP)
+    for rname in sorted(extra):
+        fails.append("rust/wuw-board %s has no C++ counterpart in pincheck" % rname)
+    print("\nrust/wuw-board: %d pins compared" % len(RUST_TO_CPP))
+
 if fails:
     print("\nFAIL")
     for f in fails: print("  " + f)
