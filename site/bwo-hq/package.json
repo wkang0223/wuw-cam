@@ -1,0 +1,20 @@
+{
+  "name": "bwo-hq",
+  "private": true,
+  "type": "module",
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "build": "esbuild src/main.js --bundle --format=iife --minify --target=es2020 --outfile=hq.bundle.js",
+    "test": "node --test test/*.test.js",
+    "e2e": "playwright test"
+  },
+  "dependencies": {
+    "three": "0.185.1",
+    "three-mesh-bvh": "0.9.14",
+    "three-gpu-pathtracer": "0.0.24"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10",
+    "@playwright/test": "1.55.0"
+  }
+}
